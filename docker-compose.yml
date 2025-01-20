@@ -1,0 +1,33 @@
+services:
+  #  backend:
+  #    container_name: graphql_backend
+  #    build:
+  #      context: .
+  #      dockerfile: Dockerfile
+  #      target: development
+  #    volumes:
+  #      - .:/usr/src/app
+  #    env_file:
+  #      - .env
+  #    command: npm run start:dev
+  #    ports:
+  #      - '${BACKEND_PORT}:${BACKEND_PORT}'
+  #    depends_on:
+  #      - postgres
+  #    networks:
+  #      - graphql_network
+
+  postgres:
+    container_name: graphql_postgres
+    image: postgres:latest
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    env_file:
+      - .env.docker
+    restart: always
+    networks:
+      - graphql_network
+
+networks:
+  graphql_network:
+    driver: bridge
