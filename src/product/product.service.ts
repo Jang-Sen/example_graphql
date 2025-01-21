@@ -17,6 +17,17 @@ export class ProductService {
     return await this.repository.find();
   }
 
+  // 상세 조회
+  async getProductById(id: string): Promise<Product> {
+    const product = await this.repository.findOneBy({ id });
+
+    if (!product) {
+      throw new NotFoundException('제품이 존재하지 않습니다.');
+    }
+
+    return product;
+  }
+
   // 등록
   async createProduct(dto: CreateProductDto): Promise<Product> {
     const product = this.repository.create(dto);
