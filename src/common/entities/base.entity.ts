@@ -1,22 +1,26 @@
 import {
   CreateDateColumn,
   DeleteDateColumn,
-  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Field, ObjectType } from '@nestjs/graphql';
 
-@Entity()
+@ObjectType({ isAbstract: true })
 export abstract class Base {
   @PrimaryGeneratedColumn('uuid')
+  @Field()
   public id: string;
 
   @CreateDateColumn()
+  @Field()
   public createAt: Date;
 
   @UpdateDateColumn()
+  @Field()
   public updateAt: Date;
 
   @DeleteDateColumn()
+  @Field({ nullable: true })
   public deleteAt: Date;
 }

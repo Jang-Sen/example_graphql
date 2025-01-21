@@ -5,11 +5,10 @@ import { DbModule } from './db/db.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path/posix';
-import * as process from 'node:process';
+import { join } from 'path';
 
 @Module({
   imports: [

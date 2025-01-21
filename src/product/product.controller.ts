@@ -11,7 +11,6 @@ import { ProductService } from './product.service';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateResult } from 'typeorm';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 @ApiTags('Product')
@@ -111,13 +110,13 @@ export class ProductController {
   async updateProduct(
     @Param('id') id: string,
     @Body() dto: UpdateProductDto,
-  ): Promise<UpdateResult> {
+  ): Promise<Product> {
     return await this.productService.updateProduct(id, dto);
   }
 
   @Delete('/:id')
   @ApiOperation({ summary: '제품 삭제' })
-  async deleteProduct(@Param('id') id: string) {
+  async deleteProduct(@Param('id') id: string): Promise<string> {
     return await this.productService.deleteProduct(id);
   }
 }

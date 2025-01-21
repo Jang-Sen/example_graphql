@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
@@ -36,27 +36,24 @@ export class ProductService {
   }
 
   // 수정
-  async updateProduct(
-    id: string,
-    dto: UpdateProductDto,
-  ): Promise<UpdateResult> {
+  async updateProduct(id: string, dto: UpdateProductDto): Promise<Product> {
     const result = await this.repository.update(id, dto);
 
     if (!result.affected) {
       throw new NotFoundException('제품을 찾을 수 없습니다.');
     }
 
-    return result;
+    return await this.getProductById(id);
   }
 
   // 삭제
-  async deleteProduct(id: string): Promise<DeleteResult> {
+  async deleteProduct(id: string): Promise<string> {
     const result = await this.repository.delete(id);
 
     if (!result.affected) {
       throw new NotFoundException('제품을 찾을 수 없습니다.');
     }
 
-    return result;
+    return '삭제 완료';
   }
 }

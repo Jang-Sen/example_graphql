@@ -1,18 +1,23 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
+@InputType()
 export class CreateProductDto {
   @IsString()
+  @Field()
   @ApiProperty({ description: '제품 이름', example: 'iPhone 16 Pro' })
   name: string;
 
   @IsNumber()
   @Type(() => Number)
+  @Field(() => Int)
   @ApiProperty({ description: '제품 가격', example: '1550000' })
   price: number;
 
   @IsString()
+  @Field()
   @ApiProperty({
     description: '제품 설명',
     example:
@@ -21,11 +26,13 @@ export class CreateProductDto {
   description: string;
 
   @IsString()
+  @Field()
   @ApiProperty({ description: '제품 종류', example: 'iPhone' })
   category: string;
 
   @IsString()
   @IsOptional()
+  @Field({ nullable: true })
   @ApiPropertyOptional({
     description: '제품 사진',
     example:
