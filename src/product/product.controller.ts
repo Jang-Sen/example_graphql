@@ -25,6 +25,12 @@ export class ProductController {
     return await this.productService.getProducts();
   }
 
+  @Get('/:id')
+  @ApiOperation({ summary: '제품 상세 조회' })
+  async getProductById(@Param('id') id: string): Promise<Product> {
+    return await this.productService.getProductById(id);
+  }
+
   @Post()
   @ApiOperation({ summary: '제품 등록' })
   @ApiBody({

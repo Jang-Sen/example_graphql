@@ -5,7 +5,11 @@ import { DbModule } from './db/db.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
-import * as Joi from 'joi';
+import Joi from 'joi';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path/posix';
+import * as process from 'node:process';
 
 @Module({
   imports: [
@@ -19,10 +23,13 @@ import * as Joi from 'joi';
       }),
       envFilePath: '.env',
     }),
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   playground: true,
-    // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
+      driver: ApolloDriver,
+      context: ({ req }) => ({ req }),
+      playground: true,
+      debug: true,
+    }),
     DbModule,
     UserModule,
     ProductModule,
