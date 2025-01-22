@@ -1,6 +1,6 @@
 services:
   #  backend:
-  #    container_name: graphql_backend
+  #    container_name: graphql_api
   #    build:
   #      context: .
   #      dockerfile: Dockerfile
@@ -11,7 +11,7 @@ services:
   #      - .env
   #    command: npm run start:dev
   #    ports:
-  #      - '${BACKEND_PORT}:${BACKEND_PORT}'
+  #      - '8000:8000'
   #    depends_on:
   #      - postgres
   #    networks:

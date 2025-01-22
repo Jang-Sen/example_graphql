@@ -18,4 +18,12 @@ export class CreateUserDto {
   @IsOptional()
   @ApiPropertyOptional({ description: '회원 연락처', example: '01095110662' })
   phone?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: '회원 프로필 이미지',
+    example: 'https://www.studiopeople.kr/common/img/default_profile.png',
+  })
+  image?: string;
 }
