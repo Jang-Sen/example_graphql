@@ -1,9 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { User } from '../user/entities/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { LoginUserDto } from '../user/dto/login-user.dto';
+import { LocalAuthGuard } from './guard/local-auth.guard';
+import { RequestUserInterface } from './interface/requestUser.interface';
+import { AccessTokenGuard } from './guard/access-token.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -17,8 +19,19 @@ export class AuthController {
   }
 
   @Post('/login')
+  @UseGuards(LocalAuthGuard)
   @ApiOperation({ summary: '로그인' })
-  async login(@Body() dto: LoginUserDto): Promise<User> {
-    return await this.authService.login(dto);
+  async login(@Req() req: RequestUserInterface) {
+    const user = req.user;
+    const token = this.authService.getAccessToken(user.id);
+
+    return { user, token };
+  }
+
+  @Get()
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: '회원 정보' })
+  async userInfo(@Req() req: RequestUserInterface) {
+    return req.user;
   }
 }

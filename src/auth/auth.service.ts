@@ -4,10 +4,17 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { User } from '../user/entities/user.entity';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import * as bcrypt from 'bcryptjs';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { TokenPayloadInterface } from '../common/interface/token-payload.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   // 회원가입
   async signup(dto: CreateUserDto): Promise<User> {
@@ -28,5 +35,17 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  // 토큰 발행
+  public getAccessToken(userId: string) {
+    const payload: TokenPayloadInterface = { userId };
+
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.get('ACCESS_TOKEN_SECRET'),
+      expiresIn: this.configService.get('ACCESS_TOKEN_EXPIRATION_TIME'),
+    });
+
+    return accessToken;
   }
 }
